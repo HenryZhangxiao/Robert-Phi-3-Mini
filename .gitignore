@@ -1,0 +1,6 @@
+env/
+
+*.json
+
+tokenized_dataset
+phi3*
