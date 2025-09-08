@@ -33,7 +33,6 @@ def chat(prompt: str, max_new_tokens=128):
     return tokenizer.decode(outputs[0], skip_special_tokens=True)
 
 if __name__ == "__main__":
-    user_input = "How's it going?"
-    print("User:", user_input)
-    response = chat(f"User: {user_input}\nFriend:")
-    print("Friend:", response)
+    user_input = "Do you want to go to an escape room tonight?"
+    response = chat(f"Me: {user_input}\nRobert:")
+    print(response)
