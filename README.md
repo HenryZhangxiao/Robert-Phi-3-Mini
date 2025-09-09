@@ -73,7 +73,7 @@ We trained for 3 epochs at 2e-4 learning rate using fp16 precision with rank=16 
 ### inference.py <a name="inference"></a>
 We wrap the base model with our LoRA adapter and prompt the model
 
-We run inferencing with temperature=0.7 and top_p=0.9 so our results are somewhat unpredictable and but not completely random or deterministic
+We run inferencing with temperature=0.7 and top_p=0.9 so our results are somewhat unpredictable but not completely random or deterministic
 
 <br></br>
 
