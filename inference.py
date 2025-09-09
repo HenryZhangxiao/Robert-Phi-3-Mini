@@ -1,4 +1,3 @@
-# inference.py
 import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
 from peft import PeftModel
@@ -17,9 +16,15 @@ base_model = AutoModelForCausalLM.from_pretrained(
     device_map="auto",
 )
 
-# Load LoRA adapter
+# Wrap base model with LoRA adapter
 model = PeftModel.from_pretrained(base_model, ADAPTER_PATH)
 
+'''
+max_new_tokens: cap on generated length
+do_sample: enables randomness
+temperature: sharpens/softens the distribution (lower = more deterministic)
+top_p: nucleus sampling, essentially chance to take non-greedy token
+'''
 def chat(prompt: str, max_new_tokens=128):
     inputs = tokenizer(prompt, return_tensors="pt").to("cuda")
     with torch.no_grad():

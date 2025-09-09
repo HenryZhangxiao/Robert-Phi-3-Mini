@@ -1,4 +1,3 @@
-# train.py
 import torch
 from datasets import load_from_disk
 from transformers import (
@@ -28,11 +27,17 @@ if tokenizer.pad_token is None:
     tokenizer.pad_token = tokenizer.eos_token
 
 # BitsAndBytes (QLoRA) config
+'''
+load_in_4bit: quantization precision
+bnb_4bit_use_double_quant: reduces memory usage by quantizing the quantization constants (saves 0.4 bits per param)
+bnb_4bit_quant_type: 4-bit float, memory compression, optimized for data that follows a normal distribution
+bnb_4bit_compute_dtype: compute datatype, set precision to something that benefits memory as well as your gpu tensor core specialization
+'''
 bnb_config = BitsAndBytesConfig(
     load_in_4bit=True,
     bnb_4bit_use_double_quant=True,
     bnb_4bit_quant_type="nf4",
-    bnb_4bit_compute_dtype=torch.float16,   # safe for consumer GPUs
+    bnb_4bit_compute_dtype=torch.float16,
 )
 
 # Load base model in 4-bit
@@ -45,6 +50,12 @@ model = AutoModelForCausalLM.from_pretrained(
 # Prepare for k-bit training and add LoRA
 model = prepare_model_for_kbit_training(model)
 
+'''
+r: rank = number of params in adaption layer, ie. precision
+lora_alpha: scale multiplier to weight changes = alpha / rank
+target_modules: (q)uery, (k)ey, (v)alue, (o)utput projections are the attention layers
+lora_dropout: percentage randomly zeroes parameters to prevent overfitting
+'''
 lora_config = LoraConfig(
     r=16,
     lora_alpha=32,
@@ -64,6 +75,14 @@ eval_dataset = dataset["test"]
 data_collator = DataCollatorForLanguageModeling(tokenizer=tokenizer, mlm=False)
 
 # Training args
+'''
+logging_steps: log every N steps
+eval_strategy/save_strategy: eval/save the model after each X
+optim: optimizer
+gradient_checkpointing: store checkpoints of calculated gradients instead of storing after each forward pass
+save_total_limit: save only last N checkpoints
+report_to: log to external services?
+'''
 training_args = TrainingArguments(
     output_dir=OUTPUT_DIR,
     per_device_train_batch_size=PER_DEVICE_BATCH,

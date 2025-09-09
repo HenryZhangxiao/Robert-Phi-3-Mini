@@ -1,6 +1,5 @@
-# prepare_dataset.py
 import json
-from datasets import load_dataset, DatasetDict
+from datasets import load_dataset
 from transformers import AutoTokenizer
 
 # --------- SETTINGS ----------
@@ -24,10 +23,10 @@ def tokenize(example):
 # Load JSON
 dataset = load_dataset("json", data_files=INPUT_JSON)
 
-# Train/val split
+# Split dataset into 90% train and 10% validation, seed=42 for reproducability (arbitrary)
 split_dataset = dataset["train"].train_test_split(test_size=0.1, seed=42)
 
-# Tokenize
+# Tokenize every data point
 tokenized = split_dataset.map(tokenize, batched=False)
 
 # Save processed dataset
