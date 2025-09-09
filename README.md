@@ -74,6 +74,8 @@ We run inferencing with temperature=0.7 and top_p=0.9 so our results are somewha
 You'll have to trust me on this, but the results turn out to be extremely similar to how the target communicates over text
 Think blunt, direct, and extremely straightforward
 
+<img width="1464" height="190" alt="image" src="https://github.com/user-attachments/assets/7a3baf59-8615-4cee-8b2f-3d460d328acf" />
+
 <br></br>
 
 
