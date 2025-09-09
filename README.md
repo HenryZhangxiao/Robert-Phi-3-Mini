@@ -64,6 +64,7 @@ We do a 90/10 training/validation split to prevent overfitting and biases
 
 ### train.py <a name="train"></a>
 We use QLoRA 4-bit quantization to efficiently fine-tune the base model
+
 We trained for 3 epochs at 2e-4 learning rate using fp16 precision with rank=16 and alpha=32 for effective 2x training impact with 5% dropout
 
 <br></br>
